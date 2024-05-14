@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <style>
+        #details-btn{cursor: pointer;}
+        #single-user-info{display: none; width: 40%; border: 1px dotted gray;background-color: whitesmoke; padding: 5px 30px; text-align: center;}
+    </style>
+</head>
+<body>
+    <div id="user-list">
+
+    </div>
+    <div id="single-user-info">
+        
+
+    </div>
+    
+    <script>
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(res=> res.json())
+        .then(data=> {
+            for (let i = 0; i < data.length; i++) {
+                const userInfo = data[i];
+                const userListCall = document.getElementById('user-list');
+                const pCreate = document.createElement('p');
+                pCreate.innerHTML = `Name: ${userInfo.name}  <button onclick="userDetails(${userInfo.id})" id="details-btn">Details </button> `;
+                userListCall.appendChild(pCreate);
+                
+            }
+        })
+        function userDetails(userId){
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+            .then(res=> res.json())
+            .then(data=> {
+                const singleUserInfoCall = document.getElementById('single-user-info');
+                singleUserInfoCall.style.display = 'block';
+                singleUserInfoCall.innerHTML =`<h3>User Info</h3>
+                <p>Name:${data.name}</p>
+                <p>Email: ${data.email}</p>
+                <p>Phone: ${data.phone}</p>
+                    `
+            })
+        }
+    </script>
+</body>
+</html>

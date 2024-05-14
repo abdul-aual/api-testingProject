@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find User</title>
+    <style>
+        #btn{color:orange}
+        #details{width: 40%; box-shadow: 5px 5px 10px gray; background-color: ghostwhite; padding: 20px; display: none; }
+    </style>
+</head>
+
+<body>
+
+    <input id="input" type="text" name="" id="">
+    <button id="load-btn">Load User</button>
+    <div id="showUser">
+
+    </div>
+    <div  id="details">
+
+    </div>    
+
+    <script>
+
+        document.getElementById('load-btn').addEventListener('click', function(){
+            const inputCall = document.getElementById('input');
+            const inputNo = parseInt(inputCall.value);
+            inputCall.value = '';
+            fetch('https://jsonplaceholder.typicode.com/users')
+        .then(res=> res.json())
+        .then(data=> {
+            data = data.slice(0,inputNo);
+            const showUserCall = document.getElementById('showUser');
+            for (let i = 0; i < data.length; i++) {
+                const userInfo = data[i];
+                const pCreate = document.createElement('p')
+                pCreate.innerHTML = `<i> Name: </i> <strong> ${userInfo.name} </strong><a id="btn" href="#" onclick="userDetails(${userInfo.id})" >Details-${userInfo.id} </a>
+                 `;
+                 showUserCall.appendChild(pCreate);
+                 
+                 
+                 
+            }
+        })
+
+        })
+
+        
+        function userDetails(userId)
+        {
+            document.getElementById('details').style.display = 'block';
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+            .then(res=> res.json())
+            .then(data=>{
+                const userDetails = document.getElementById('details');
+                userDetails.innerHTML = `<h3> Name: ${data.name} </h3>
+                <h4> Email:${data.email} </h4>
+                <p> Phone: ${data.phone} </p>
+                `;
+
+            })
+
+        }
+
+    </script>
+</body>
+</html>
